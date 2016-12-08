@@ -1,25 +1,47 @@
 // Creates the individual squares in the board
-class Square extends React.Component {
-  render() {
-    // The render method is the core feature of React. It will deliver
-    // components of html, with "props" - additional data or behavior to
-    // use in your app.
-    return (
-      <button className="square">
-        {this.props.value}
-      </button>
-    );
-  }
+function Square(props) {
+  return (
+    <button className="square" onClick={() => props.onClick()}>
+      {props.value}
+    </button>
+  );
 }
 
 // Header with game information above 3x3 grid
 class Board extends React.Component {
+
+  constructor() {
+    super();
+    this.state = {
+      squares: Array(9).fill(null),
+      xIsNext: true
+    }
+  }
+
+  handleClick(i) {
+    const squares = this.state.squares.slice();
+    if (calculateWinner(squares) || squares[i]) {
+      return;
+    }
+    squares[i] = this.state.xIsNext ? "X" : "O";
+    this.setState({
+      squares: squares,
+      xIsNext: !this.state.xIsNext});
+  }
+
   renderSquare(i) {
 
-    return <Square value={i}/>;
+    return <Square value={this.state.squares[i]} onClick={() => this.handleClick(i)}/>;
+
   }
   render() {
-    const status = 'Next player: X';
+    const winner = calculateWinner(this.state.squares);
+    let status;
+    if (winner) {
+      status = "Winner: " + winner;
+    } else {
+      status = "Next Player: " + (this.state.xIsNext ? "X" : "O");
+    }
     // Notice how the Squares are being included. Unlike Angular, React
     // uses single braces to bind data. This is an early sight of the
     // one-way data binding React is known for.
