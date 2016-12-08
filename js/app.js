@@ -6,7 +6,7 @@ class Square extends React.Component {
     // use in your app.
     return (
       <button className="square">
-        {/* TODO */}
+        {this.props.value}
       </button>
     );
   }
@@ -15,9 +15,8 @@ class Square extends React.Component {
 // Header with game information above 3x3 grid
 class Board extends React.Component {
   renderSquare(i) {
-    // this component now has a method, renderSquare
-    // its a function to create a square (unnecessary step, for now…)
-    return <Square />;
+
+    return <Square value={i}/>;
   }
   render() {
     const status = 'Next player: X';
